@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block page_intro %}
+<p>
+My name's Dan and I'm a physicist, skier, expat, traveller, programmer, aspiring mountaineer living in Switzerland. I made this blog for fun and to share my experiences. I don't really know what I'll post here, but maybe things like trip reports, code snippets, musings on recent physics results, and complaints about the horrors of postdoc life. If even one thing I post here is helpful to one person, that's great. It's helpful to me at least.
+</p>
+{% endblock %}
+{% block title %}Blog entries{% endblock %}
+
+{% block content_title %}{% if search %}Search "{{ search }}"{% else %}Braindumps{% endif %}{% endblock %}
+
+{% block content %}
+  {% for entry in object_list %}
+    {% if search %}
+      {% set entry = entry.entry %}
+    {% endif %}
+    <h3>
+      <a href="{% if entry.published %}{{ url_for('detail', slug=entry.slug) }}{% else %}{{ url_for('edit', slug=entry.slug) }}{% endif %}">
+        {{ entry.title }}
+      </a>
+    </h3>
+    <p>Created {{ entry.timestamp.strftime('%m/%d/%Y at %G:%I%p') }}</p>
+  {% else %}
+    <p>No entries have been created yet.</p>
+  {% endfor %}
+  {% include "includes/pagination.html" %}
+{% endblock %}
